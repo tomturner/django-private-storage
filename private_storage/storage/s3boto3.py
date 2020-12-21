@@ -38,11 +38,11 @@ class PrivateS3BotoStorage(S3Boto3Storage):
     addressing_style = setting('AWS_PRIVATE_S3_ADDRESSING_STYLE')
     secure_urls = setting('AWS_PRIVATE_S3_SECURE_URLS', True)
     file_name_charset = setting('AWS_PRIVATE_S3_FILE_NAME_CHARSET', 'utf-8')
-    gzip = setting('AWS_PRIVATE_IS_GZIPPED', S3Boto3Storage.gzip)  # fallback to default
+    gzip = setting('AWS_PRIVATE_IS_GZIPPED', setting('AWS_IS_GZIPPED', False))  # fallback to default
     preload_metadata = setting('AWS_PRIVATE_PRELOAD_METADATA', False)
-    url_protocol = setting('AWS_PRIVATE_S3_URL_PROTOCOL', S3Boto3Storage.url_protocol)  # fallback to default
+    url_protocol = setting('AWS_PRIVATE_S3_URL_PROTOCOL', setting('AWS_S3_URL_PROTOCOL', 'http:'))  # fallback to default
     endpoint_url = setting('AWS_PRIVATE_S3_ENDPOINT_URL', None)
-    region_name = setting('AWS_PRIVATE_S3_REGION_NAME', S3Boto3Storage.region_name)  # fallback to default
+    region_name = setting('AWS_PRIVATE_S3_REGION_NAME', setting('AWS_S3_REGION_NAME'))  # fallback to default
     use_ssl = setting('AWS_PRIVATE_S3_USE_SSL', True)
 
     def url(self, name, *args, **kwargs):
