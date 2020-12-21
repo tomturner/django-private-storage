@@ -6,7 +6,7 @@ from django.utils.deconstruct import deconstructible
 
 from private_storage import appconfig
 from storages.backends.s3boto3 import S3Boto3Storage
-from storages.utils import setting
+from storages.utils import setting, lookup_env
 
 
 @deconstructible
@@ -20,8 +20,8 @@ class PrivateS3BotoStorage(S3Boto3Storage):
 
     # Since this class inherits the default storage, it shares many parameters with the base class.
     # Thus, redefine the setting name that is used to read these values, so almost all settings are not shared.
-    access_key = setting('AWS_PRIVATE_S3_ACCESS_KEY_ID', setting('AWS_PRIVATE_ACCESS_KEY_ID', S3Boto3Storage.access_key))
-    secret_key = setting('AWS_PRIVATE_S3_SECRET_ACCESS_KEY', setting('AWS_PRIVATE_SECRET_ACCESS_KEY', S3Boto3Storage.secret_key))
+    access_key = setting('AWS_PRIVATE_S3_ACCESS_KEY_ID', setting('AWS_PRIVATE_ACCESS_KEY_ID', lookup_env(S3Boto3Storage.access_key_names)))
+    secret_key = setting('AWS_PRIVATE_S3_SECRET_ACCESS_KEY', setting('AWS_PRIVATE_SECRET_ACCESS_KEY', lookup_env(S3Boto3Storage.secret_key_names)))
     file_overwrite = setting('AWS_PRIVATE_S3_FILE_OVERWRITE', False)  # false, differ from base class
     object_parameters = setting('AWS_PRIVATE_S3_OBJECT_PARAMETERS', {})
     bucket_name = setting('AWS_PRIVATE_STORAGE_BUCKET_NAME')
